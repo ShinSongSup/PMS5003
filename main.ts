@@ -8,19 +8,22 @@
  */
 //% color=#0fbc11 icon="\uf0c3" weight=90
 namespace PMS5003 {
+    export enum PMSMODE {
+        ACTIVEMODE,
+        PASSIVEMODE
+    }
 
     let pm01: number = 0
     let pm25: number = 0
     let pm10: number = 0
     let readBuffers: Buffer = null
+    let mode: number = 0
 
     /**
-    * makbot board initialization, please execute at boot time
+    * PM sensor initialization, please execute at boot time
     */
-    //% weight=100 blockId=pmsInit block="Initialize PMS"
-    //% weight=100
     // // blockId="pms_init" block="set PMS5003 RX %pmsRX| TX %pmsTX|at baud rate 9600"
-    //% blockId="pms_init" block="PMS5003 시리얼포트 설정 : RX %pmsRX| TX %pmsTX| 통신속도: 9600"
+    //% weight=98 blockId="pms_init" block="PMS5003 시리얼포트 설정 : RX %pmsRX| TX %pmsTX| 통신속도: 9600"
     export function initPMS(pmsRX: SerialPin, pmsTX: SerialPin): void {
 
         serial.redirect(
@@ -47,6 +50,8 @@ namespace PMS5003 {
         buf[5] = 0x01; // LRCH
         buf[6] = 0x70; // LRCL
 
+        mode = PMSMODE.PASSIVEMODE
+
         serial.writeBuffer(buf);
     }
 
@@ -67,14 +72,16 @@ namespace PMS5003 {
         buf[5] = 0x01; // LRCH
         buf[6] = 0x71; // LRCL
 
+        mode = PMSMODE.ACTIVEMODE
         serial.writeBuffer(buf);
     }
 
     /**
      * send PM0.1 data
      */
-    //% weight=100 blockId="get PM1.0"  block="get PM1.0"
+    //% weight=100 blockId="get PM1.0"  block="PM1.0 값 가져오기"
     export function sendCmdPM01(): number {
+
         return pm01
     }
 
@@ -82,7 +89,7 @@ namespace PMS5003 {
     /**
     * send PM2.5 data
     */
-    //% weight=100 blockId="get PM2.5"  block="get PM2.5"
+    //% weight=100 blockId="get PM2.5"  block="PM2.5 값 가져오기"
     export function sendCmdPM25(): number {
         return pm25
     }
@@ -91,7 +98,7 @@ namespace PMS5003 {
     /**
     * send PM10 data 
     */
-    //% weight=100 blockId="get PM10"  block="get PM10"
+    //% weight=100 blockId="get PM10"  block="PM10 값 가져오기"
     export function sendCmdPM10(): number {
         return pm10
     }
@@ -99,7 +106,7 @@ namespace PMS5003 {
     /**
      * get PM data
      */
-    function sendCmdPM() {
+    function getPMDataInPassiveMode() {
 
         let bufdata: number = 0
         let j: number = 0
@@ -109,6 +116,7 @@ namespace PMS5003 {
         readBuffers = serial.readBuffer(32)
         //serial.writeBuffer(readBuffers)
         hexString = readBuffers.toHex()
+
 
         for (let i = 0; i < readBuffers.length * 2; i += 2) {
             receivedString[j] = hexString[i] + hexString[i + 1]
@@ -127,9 +135,40 @@ namespace PMS5003 {
     }
 
     /**
+     * get PM data in active mode
+     */
+    //% weight=100 blockId="get PM data in active mode"  block="미세먼지 값 가져오기"
+    function getPMDataInActiveMode() {
+
+        let bufdata: number = 0
+        let j: number = 0
+        let hexString: string = null
+        let receivedString: string[] = []
+        
+        serial.onDataReceived("42", function () {
+            readBuffers = serial.readBuffer(31)
+            //serial.writeBuffer(readBuffers)
+            hexString = readBuffers.toHex()
+
+
+            for (let i = 0; i < readBuffers.length * 2; i += 2) {
+                receivedString[j] = hexString[i] + hexString[i + 1]
+                j++;
+            }
+
+            if (receivedString[0] == '4d') {
+                pm01 = convertToDecimal(receivedString[4] + receivedString[5])
+                pm25 = convertToDecimal(receivedString[6] + receivedString[7])
+                pm10 = convertToDecimal(receivedString[8] + receivedString[9])
+            }
+        })
+    }
+
+    /**
      * send command, get particle data
      */
-    //% weight=100 blockId="read_PMS_inPassiveMode"  block="read PMS data in passive mode"
+    // weight=100 blockId="read_PMS_inPassiveMode"  block="read PMS data in passive mode"
+    //% weight=100 blockId="read_PMS_inPassiveMode"  block="패시브 모드에서 PMS 데이터 가져오기"
     export function sendCmdpmsData() {
 
         let buf = pins.createBuffer(7);
@@ -143,11 +182,11 @@ namespace PMS5003 {
 
         serial.writeBuffer(buf);
 
-        sendCmdPM()
+        getPMDataInPassiveMode()
     }
 
     /**
-     * 문자를 십진숫자로 변환하는 함수
+     * convert string to decimal
      */
     function convertToDecimal(inString: string): number {
 
@@ -169,7 +208,7 @@ namespace PMS5003 {
     }
 
     /**
-    * 16진수로 변환하기 위해 A ~ F, a ~ f를 숫자로 변환
+    * convert hexdecimal value(A ~ F, a ~ f) to decimal
     */
 
     function parseString(indata: string): number {
