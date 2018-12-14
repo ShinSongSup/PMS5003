@@ -23,7 +23,7 @@ namespace PMS5003 {
     * PM sensor initialization, please execute at boot time
     */
     // // blockId="pms_init" block="set PMS5003 RX %pmsRX| TX %pmsTX|at baud rate 9600"
-    //% weight=100 blockId="pms_init" block="PMS5003 시리얼포트 설정 : RX %pmsRX| TX %pmsTX| 통신속도: 9600"
+    //% weight=100 blockId=initPMS block="PMS5003 시리얼포트 설정 : RX %pmsRX| TX %pmsTX| 통신속도: 9600"
     export function initPMS(pmsRX: SerialPin, pmsTX: SerialPin): void {
 
         serial.redirect(
@@ -38,8 +38,8 @@ namespace PMS5003 {
      * send command, change to passive mode
      */
     // weight=100 blockId="change_PassiveMode"  block="change passive mode"
-    //% weight=99 blockId="change_PassiveMode"  block="패시브 모드로 변경하기"
-    export function sendCmdChangeToPassiveMode() {
+    //% weight=99 blockId=changePassiveMode  block="패시브 모드로 변경하기"
+    export function changePassiveMode() {
 
         let buf = pins.createBuffer(7);
         buf[0] = 0x42; // pre fix1
@@ -60,8 +60,8 @@ namespace PMS5003 {
      * send command, change to active mode
      */
     // weight=98 blockId="change_PassiveMode"  block="change passive mode"
-    //% weight=98 blockId="change_ActiveMode"  block="액티브 모드로 변경하기"
-    export function sendCmdChangeToActiveMode() {
+    //% weight=98 blockId=changeActiveMode  block="액티브 모드로 변경하기"
+    export function changeActiveMode() {
 
         let buf = pins.createBuffer(7);
         buf[0] = 0x42; // pre fix1
@@ -79,9 +79,8 @@ namespace PMS5003 {
     /**
      * send PM0.1 data
      */
-    //% weight=96 blockId="get PM1.0"  block="PM1.0 값 가져오기"
-    export function sendCmdPM01(): number {
-
+    //% weight=96 blockId=getPM10  block="PM1.0 값 가져오기"
+    export function getPM01(): number {
         return pm01
     }
 
@@ -89,8 +88,8 @@ namespace PMS5003 {
     /**
     * send PM2.5 data
     */
-    //% weight=96 blockId="get PM2.5"  block="PM2.5 값 가져오기"
-    export function sendCmdPM25(): number {
+    //% weight=96 blockId=getPM25  block="PM2.5 값 가져오기"
+    export function getPM25(): number {
         return pm25
     }
 
@@ -98,15 +97,15 @@ namespace PMS5003 {
     /**
     * send PM10 data 
     */
-    //% weight=96 blockId="get PM10"  block="PM10 값 가져오기"
-    export function sendCmdPM10(): number {
+    //% weight=96 blockId=getPM10  block="PM10 값 가져오기"
+    export function getPM10(): number {
         return pm10
     }
 
     /**
      * get PM data
      */
-    function getPMDataInPassiveMode() {
+    function getPMData() {
 
         let bufdata: number = 0
         let j: number = 0
@@ -137,7 +136,7 @@ namespace PMS5003 {
     /**
      * get PM data in active mode
      */
-    //% weight=98 blockId="get PM data in active mode"  block="자동모드에서 미세먼지 값 가져오기"
+    //% weight=98 blockId=getPMDataInActiveMode"  block="자동모드에서 미세먼지 값 가져오기"
     function getPMDataInActiveMode() {
 
         let bufdata: number = 0
@@ -168,8 +167,8 @@ namespace PMS5003 {
      * send command, get particle data
      */
     // weight=100 blockId="read_PMS_inPassiveMode"  block="read PMS data in passive mode"
-    //% weight=97 blockId="read_PMS_inPassiveMode"  block="수동모드에서 미세먼지 값 가져오기"
-    export function sendCmdpmsData() {
+    //% weight=97 blockId=getPMDataInPassiveMode  block="수동모드에서 미세먼지 값 가져오기"
+    export function getPMDataInPassiveMode() {
 
         let buf = pins.createBuffer(7);
         buf[0] = 0x42; // pre fix1
@@ -182,7 +181,7 @@ namespace PMS5003 {
 
         serial.writeBuffer(buf);
 
-        getPMDataInPassiveMode()
+        getPMData()
     }
 
     /**
