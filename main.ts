@@ -137,7 +137,7 @@ namespace PMS5003 {
     /**
      * get PM data in active mode
      */
-    //% weight=100 blockId="get PM data in active mode"  block="미세먼지 값 가져오기"
+    //% weight=98 blockId="get PM data in active mode"  block="자동모드에서 미세먼지 값 가져오기"
     function getPMDataInActiveMode() {
 
         let bufdata: number = 0
@@ -168,7 +168,7 @@ namespace PMS5003 {
      * send command, get particle data
      */
     // weight=100 blockId="read_PMS_inPassiveMode"  block="read PMS data in passive mode"
-    //% weight=100 blockId="read_PMS_inPassiveMode"  block="패시브 모드에서 PMS 데이터 가져오기"
+    //% weight=98 blockId="read_PMS_inPassiveMode"  block="수동모드에서 미세먼지 값 가져오기"
     export function sendCmdpmsData() {
 
         let buf = pins.createBuffer(7);
