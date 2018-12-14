@@ -8,7 +8,7 @@ input.onButtonPressed(Button.A, function () {
     basic.showNumber(PMS5003.sendCmdPM25())
     basic.showNumber(PMS5003.sendCmdPM10())
 })
-PMS5003.intialPMS(SerialPin.P8, SerialPin.P2)
+PMS5003.initPMS(SerialPin.P8, SerialPin.P2)
 basic.forever(function () {
 	
 })

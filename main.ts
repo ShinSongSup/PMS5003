@@ -8,7 +8,7 @@
 /**
  * Custom blocks
  */
-//% color=#0fbc11 icon="\uf1eb" weight=90
+//% color=#0fbc11 icon="\uf0c3" weight=90
 
 namespace PMS5003 {
 
@@ -23,7 +23,7 @@ namespace PMS5003 {
     //% weight=100 blockId=pmsInit block="Initialize PMS"
     //% weight=100
     //% blockId="pms_init" block="set PMS5003 RX %pmsRX| TX %pmsTX|at baud rate 9600"
-    export function intialPMS(pmsRX: SerialPin, pmsTX: SerialPin): void {
+    export function initPMS(pmsRX: SerialPin, pmsTX: SerialPin): void {
 
         serial.redirect(
             SerialPin.P2,
