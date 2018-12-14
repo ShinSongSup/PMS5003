@@ -168,7 +168,7 @@ namespace PMS5003 {
      * send command, get particle data
      */
     // weight=100 blockId="read_PMS_inPassiveMode"  block="read PMS data in passive mode"
-    //% weight=98 blockId="read_PMS_inPassiveMode"  block="수동모드에서 미세먼지 값 가져오기"
+    //% weight=97 blockId="read_PMS_inPassiveMode"  block="수동모드에서 미세먼지 값 가져오기"
     export function sendCmdpmsData() {
 
         let buf = pins.createBuffer(7);
