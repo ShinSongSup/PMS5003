@@ -3,13 +3,15 @@
  * by ssshin
  * https://www.make-robot.co.kr
  */
-
-
 /**
  * Custom blocks
  */
 //% color=#0fbc11 icon="\uf0c3" weight=90
 namespace PMS5003 {
+    export enum PMSCmd {
+		PREFIX1 = "42",
+		PREFIX2 = "4D",
+	}
 
     let pm01: number = 0
     let pm25: number = 0
@@ -21,7 +23,8 @@ namespace PMS5003 {
     */
     //% weight=100 blockId=pmsInit block="Initialize PMS"
     //% weight=100
-    //% blockId="pms_init" block="set PMS5003 RX %pmsRX| TX %pmsTX|at baud rate 9600"
+    // // blockId="pms_init" block="set PMS5003 RX %pmsRX| TX %pmsTX|at baud rate 9600"
+    //% blockId="pms_init" block="PMS5003 시리얼포트 설정 : RX %pmsRX| TX %pmsTX| 통신속도: 9600"
     export function initPMS(pmsRX: SerialPin, pmsTX: SerialPin): void {
 
         serial.redirect(
@@ -35,7 +38,8 @@ namespace PMS5003 {
     /**
      * send command, change to passive mode
      */
-    //% weight=100 blockId="change_PassiveMode"  block="change passive mode"
+    // weight=100 blockId="change_PassiveMode"  block="change passive mode"
+    //% weight=100 blockId="change_PassiveMode"  block="패시브 모드로 변경하기"
     export function sendCmdChangeToPassiveMode() {
 
         let buf = pins.createBuffer(7);
@@ -46,6 +50,26 @@ namespace PMS5003 {
         buf[4] = 0x00; // dataL
         buf[5] = 0x01; // LRCH
         buf[6] = 0x70; // LRCL
+
+        serial.writeBuffer(buf);
+    }
+
+    
+    /**
+     * send command, change to active mode
+     */
+    // weight=100 blockId="change_PassiveMode"  block="change passive mode"
+    //% weight=100 blockId="change_ActiveMode"  block="액티브 모드로 변경하기"
+    export function sendCmdChangeToActiveMode() {
+
+        let buf = pins.createBuffer(7);
+        buf[0] = 0x42; // pre fix1
+        buf[1] = 0x4d; // pre fix2
+        buf[2] = 0xe1; // cmd type
+        buf[3] = 0x00; // dataH
+        buf[4] = 0x01; // dataL
+        buf[5] = 0x01; // LRCH
+        buf[6] = 0x71; // LRCL
 
         serial.writeBuffer(buf);
     }
@@ -95,16 +119,13 @@ namespace PMS5003 {
             j++;
         }
 
-
-        if (receivedString[0] == '42') {
-            if (receivedString[1] == '4d') {
+        if (receivedString[0] == PMSCmd.PREFIX1) {
+            if (receivedString[1] == PMSCmd.PREFIX2) {
 
                 pm01 = convertToDecimal(receivedString[4] + receivedString[5])
                 pm25 = convertToDecimal(receivedString[6] + receivedString[7])
                 pm10 = convertToDecimal(receivedString[8] + receivedString[9])
-                //basic.showNumber(pm01)
-                //basic.showNumber(pm25)
-                //basic.showNumber(pm10)
+
             }
         }
     }
