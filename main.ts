@@ -8,10 +8,6 @@
  */
 //% color=#0fbc11 icon="\uf0c3" weight=90
 namespace PMS5003 {
-    export enum PMSCmd {
-		PREFIX1 = "42",
-		PREFIX2 = "4D",
-	}
 
     let pm01: number = 0
     let pm25: number = 0
@@ -54,7 +50,7 @@ namespace PMS5003 {
         serial.writeBuffer(buf);
     }
 
-    
+
     /**
      * send command, change to active mode
      */
@@ -119,8 +115,8 @@ namespace PMS5003 {
             j++;
         }
 
-        if (receivedString[0] == PMSCmd.PREFIX1) {
-            if (receivedString[1] == PMSCmd.PREFIX2) {
+        if (receivedString[0] == '42') {
+            if (receivedString[1] == '4d') {
 
                 pm01 = convertToDecimal(receivedString[4] + receivedString[5])
                 pm25 = convertToDecimal(receivedString[6] + receivedString[7])
