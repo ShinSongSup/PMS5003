@@ -23,7 +23,7 @@ namespace PMS5003 {
     * PM sensor initialization, please execute at boot time
     */
     // // blockId="pms_init" block="set PMS5003 RX %pmsRX| TX %pmsTX|at baud rate 9600"
-    //% weight=98 blockId="pms_init" block="PMS5003 시리얼포트 설정 : RX %pmsRX| TX %pmsTX| 통신속도: 9600"
+    //% weight=100 blockId="pms_init" block="PMS5003 시리얼포트 설정 : RX %pmsRX| TX %pmsTX| 통신속도: 9600"
     export function initPMS(pmsRX: SerialPin, pmsTX: SerialPin): void {
 
         serial.redirect(
@@ -38,7 +38,7 @@ namespace PMS5003 {
      * send command, change to passive mode
      */
     // weight=100 blockId="change_PassiveMode"  block="change passive mode"
-    //% weight=100 blockId="change_PassiveMode"  block="패시브 모드로 변경하기"
+    //% weight=99 blockId="change_PassiveMode"  block="패시브 모드로 변경하기"
     export function sendCmdChangeToPassiveMode() {
 
         let buf = pins.createBuffer(7);
@@ -59,8 +59,8 @@ namespace PMS5003 {
     /**
      * send command, change to active mode
      */
-    // weight=100 blockId="change_PassiveMode"  block="change passive mode"
-    //% weight=100 blockId="change_ActiveMode"  block="액티브 모드로 변경하기"
+    // weight=98 blockId="change_PassiveMode"  block="change passive mode"
+    //% weight=98 blockId="change_ActiveMode"  block="액티브 모드로 변경하기"
     export function sendCmdChangeToActiveMode() {
 
         let buf = pins.createBuffer(7);
@@ -79,7 +79,7 @@ namespace PMS5003 {
     /**
      * send PM0.1 data
      */
-    //% weight=100 blockId="get PM1.0"  block="PM1.0 값 가져오기"
+    //% weight=97 blockId="get PM1.0"  block="PM1.0 값 가져오기"
     export function sendCmdPM01(): number {
 
         return pm01
@@ -89,7 +89,7 @@ namespace PMS5003 {
     /**
     * send PM2.5 data
     */
-    //% weight=100 blockId="get PM2.5"  block="PM2.5 값 가져오기"
+    //% weight=96 blockId="get PM2.5"  block="PM2.5 값 가져오기"
     export function sendCmdPM25(): number {
         return pm25
     }
@@ -98,7 +98,7 @@ namespace PMS5003 {
     /**
     * send PM10 data 
     */
-    //% weight=100 blockId="get PM10"  block="PM10 값 가져오기"
+    //% weight=96 blockId="get PM10"  block="PM10 값 가져오기"
     export function sendCmdPM10(): number {
         return pm10
     }
