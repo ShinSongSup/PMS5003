@@ -9,7 +9,7 @@
  * Custom blocks
  */
 //% color=#0fbc11 icon="\uf0c3" weight=90
-namespace pms5003 {
+namespace PMS5003 {
 
     let pm01: number = 0
     let pm25: number = 0
