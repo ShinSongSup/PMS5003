@@ -77,7 +77,7 @@ namespace PMS5003 {
     /**
      * send PM0.1 data
      */
-    //% weight=96 blockId=getPM10  block="PM1.0 값 가져오기"
+    //% weight=96 blockId=getPM01  block="PM1.0 값 가져오기"
     export function getPM01(): number {
         if( !pm01 )
             return 0
