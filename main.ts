@@ -13,9 +13,9 @@ namespace PMS5003 {
         PASSIVEMODE
     }
 
-    let pm01: number = 0
-    let pm25: number = 0
-    let pm10: number = 0
+    let pm01: number = null
+    let pm25: number = null
+    let pm10: number = null
     let readBuffers: Buffer = null
     let mode: number = 0
 
@@ -30,8 +30,7 @@ namespace PMS5003 {
             SerialPin.P2,
             SerialPin.P8,
             BaudRate.BaudRate9600);
-
-        //sendCmdChangeToPassiveMode();
+        
     }
 
     /**
@@ -50,9 +49,8 @@ namespace PMS5003 {
         buf[5] = 0x01; // LRCH
         buf[6] = 0x70; // LRCL
 
-        mode = PMSMODE.PASSIVEMODE
-
         serial.writeBuffer(buf);
+        mode = PMSMODE.PASSIVEMODE
     }
 
 
@@ -72,8 +70,8 @@ namespace PMS5003 {
         buf[5] = 0x01; // LRCH
         buf[6] = 0x71; // LRCL
 
-        mode = PMSMODE.ACTIVEMODE
         serial.writeBuffer(buf);
+        mode = PMSMODE.ACTIVEMODE
     }
 
     /**
@@ -81,7 +79,10 @@ namespace PMS5003 {
      */
     //% weight=96 blockId=getPM10  block="PM1.0 값 가져오기"
     export function getPM01(): number {
-        return pm01
+        if(pm01 != null )
+            return 0
+        else 
+            return pm01
     }
 
 
@@ -90,7 +91,10 @@ namespace PMS5003 {
     */
     //% weight=96 blockId=getPM25  block="PM2.5 값 가져오기"
     export function getPM25(): number {
-        return pm25
+        if (pm01 != null)
+            return 0
+        else 
+            return pm25
     }
 
 
@@ -99,7 +103,10 @@ namespace PMS5003 {
     */
     //% weight=96 blockId=getPM10  block="PM10 값 가져오기"
     export function getPM10(): number {
-        return pm10
+        if (pm01 != null)
+            return 0
+        else 
+            return pm10
     }
 
     /**
@@ -133,10 +140,12 @@ namespace PMS5003 {
         }
     }
 
+
     /**
      * get PM data in active mode
      */
-    //% weight=98 blockId=getPMDataInActiveMode"  block="자동모드에서 미세먼지 값 가져오기"
+//    //% weight=98 blockId=getPMDataInActiveMode"  block="자동모드에서 미세먼지 값 가져오기"
+/*
     function getPMDataInActiveMode() {
 
         let bufdata: number = 0
@@ -162,6 +171,7 @@ namespace PMS5003 {
             }
         })
     }
+    */
 
     /**
      * send command, get particle data
