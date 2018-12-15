@@ -79,7 +79,7 @@ namespace PMS5003 {
      */
     //% weight=96 blockId=getPM10  block="PM1.0 값 가져오기"
     export function getPM01(): number {
-        if(pm01 != null )
+        if( !pm01 )
             return 0
         else 
             return pm01
@@ -91,7 +91,7 @@ namespace PMS5003 {
     */
     //% weight=96 blockId=getPM25  block="PM2.5 값 가져오기"
     export function getPM25(): number {
-        if (pm01 != null)
+        if (!pm25)
             return 0
         else 
             return pm25
@@ -103,7 +103,7 @@ namespace PMS5003 {
     */
     //% weight=96 blockId=getPM10  block="PM10 값 가져오기"
     export function getPM10(): number {
-        if (pm01 != null)
+        if (!pm10)
             return 0
         else 
             return pm10
