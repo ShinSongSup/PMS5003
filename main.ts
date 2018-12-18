@@ -37,7 +37,7 @@ namespace PMS5003 {
      * send command, change to passive mode
      */
     // weight=100 blockId="change_PassiveMode"  block="change passive mode"
-    //% weight=99 blockId=changePassiveMode  block="패시브 모드로 변경하기"
+    //% weight=99 blockId=changePassiveMode  block="수동모드로 변경하기"
     export function changePassiveMode() {
 
         let buf = pins.createBuffer(7);
@@ -58,7 +58,7 @@ namespace PMS5003 {
      * send command, change to active mode
      */
     // weight=98 blockId="change_PassiveMode"  block="change passive mode"
-    //% weight=98 blockId=changeActiveMode  block="액티브 모드로 변경하기"
+    //% weight=98 blockId=changeActiveMode  block="자동모드로 변경하기"
     export function changeActiveMode() {
 
         let buf = pins.createBuffer(7);
